@@ -20,7 +20,7 @@ import com.android.future.usb.UsbManager;
 public class AdkExampleActivity extends Activity {
 	
 	private static final String ACTION_USB_PERMISSION = 
-			"net.hardroid.adk.example.action.USB_PERMISSION";
+			"com.tigris.adk.connection.USB_PERMISSION";
 	
 	// USB가 감지되었을 때의 이벤트를 받음.
 	private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
