@@ -13,6 +13,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.android.future.usb.UsbAccessory;
 import com.android.future.usb.UsbManager;
@@ -63,6 +64,9 @@ public class AdkExampleActivity extends Activity {
 	private UsbAccessory mAccessory;
 	private PendingIntent mPermissionIntent;
 	private boolean mPermissionRequestPending;
+	private ToggleButton btnLed;
+    private AdkHandler handler;
+
 	
 	/** 액티비티가 생성될 때 호출 */
     @Override
@@ -70,7 +74,8 @@ public class AdkExampleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         txtMsg = (TextView)this.findViewById(R.id.txtMsg);
-        
+        btnLed = (ToggleButton)this.findViewById(R.id.btnLed); // 버튼
+
         //Android Accessory Protocol을 구현한 장비의 연결에 대한 브로드캐스트 리시버 등록
       	IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
       	filter.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED);
@@ -107,6 +112,11 @@ public class AdkExampleActivity extends Activity {
 		}
 	}
     
+    @Override
+    public void onPause() {
+         super.onPause();
+         closeAccessory();
+    }
     // 액티비티가 소멸될 때 호출
  	@Override
  	protected void onDestroy() {
@@ -117,11 +127,17 @@ public class AdkExampleActivity extends Activity {
     
     private void openAccessory(UsbAccessory accessory){
 		mAccessory = accessory;
+        if(handler == null)
+            handler = new AdkHandler();
+
+       handler.open(mUsbManager, mAccessory);
 	}
 	
 	private void closeAccessory(){
-		mAccessory = null;
-	}
+        if(handler != null && handler.isConnected())
+            handler.close();
+        mAccessory = null;
+    }
 	
 	private void showMessage(String msg){
 		txtMsg.setText(msg);

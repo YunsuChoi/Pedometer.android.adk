@@ -8,5 +8,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello" />
-
+  <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="center" android:padding="20px">
+	  <ToggleButton
+	      android:id="@+id/btnLed"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:text="LED"/>
+  </LinearLayout>
 </LinearLayout>
