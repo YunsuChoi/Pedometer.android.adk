@@ -14,6 +14,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.CompoundButton;
 
 import com.android.future.usb.UsbAccessory;
 import com.android.future.usb.UsbManager;
@@ -84,6 +86,16 @@ public class AdkExampleActivity extends Activity {
       	mUsbManager = UsbManager.getInstance(this);
 		mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(
 				ACTION_USB_PERMISSION), 0);
+		
+        btnLed.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+        	@Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                     boolean isChecked) {
+                 if(handler != null && handler.isConnected()){
+                      handler.write((byte)0x1, (byte)0x0, isChecked ? 1 : 0);
+                      showMessage("Printer" + (isChecked ? "Start" : "END"));
+                 }
+            }});
     }
     
     /** 액티비티가 화면에 보일 때 호출 */
